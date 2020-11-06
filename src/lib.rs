@@ -1,7 +1,6 @@
 use rand::Rng;
 
 fn genStats() {
-    let args: Vec<String> = env::args().collect();
     let mut stats: [u8; 6] = [0; 6];
     let mut rng = rand::thread_rng();
 
