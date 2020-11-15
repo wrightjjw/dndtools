@@ -13,10 +13,10 @@ pub fn gen_stats() -> [u8; 6] {
             j += 1;
         }
         rolls.sort();
-        j = 3;
-        while j > 0 {
+        j = 0;
+        while j < 3 {
             stats[i] += rolls[j];
-            j -= 1;
+            j += 1;
         }
         i += 1;
     }
