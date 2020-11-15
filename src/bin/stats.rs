@@ -3,7 +3,7 @@ use std::env;
 
 fn run(args: Vec<String>) {
     let stats = gen_stats();
-    for s in stats.iter() {
+    for s in stats.iter().rev() {
         print!("{} ", s);
     }
     print!("\n");
