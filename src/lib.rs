@@ -1,5 +1,9 @@
 use rand::Rng;
 
+/// Generate a block of PC stats.
+///
+/// This is done by calculating each stat by rolling four d6 and dropping the lowest.
+/// Returns an array of `u8`.
 pub fn gen_stats() -> [u8; 6] {
     let mut stats: [u8; 6] = [0; 6];
     let mut rng = rand::thread_rng();
