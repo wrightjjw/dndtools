@@ -5,6 +5,7 @@ use std::env;
 fn run(args: Vec<String>) {
     let mut opts = Options::new();
     opts.optopt("n", "", "number of stat blocks to calculate", "[NUM]");
+    opts.optopt("j", "jobs", "number of jobs (threads) to run", "[THREADS]");
     opts.optflag("h", "help", "display help information");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -19,6 +20,12 @@ fn run(args: Vec<String>) {
 
     // define num_rolls from n option, panic if error
     let num_rolls: u32 = match matches.opt_get_default("n", 1) {
+        Ok(m) => m,
+        Err(e) => panic!(e.to_string()),
+    };
+
+    // define num_threads from j option, panic if error
+    let num_threads: usize = match matches.opt_get_default("j", num_cpus::get()) {
         Ok(m) => m,
         Err(e) => panic!(e.to_string()),
     };
