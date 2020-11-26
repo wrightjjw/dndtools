@@ -7,6 +7,14 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "stats",
+            "program": "${workspaceRoot}/target/debug/stats",
+            "args": [],
+            "cwd": "${workspaceRoot}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "Cargo test",
             "cargo": {
                 "args": [

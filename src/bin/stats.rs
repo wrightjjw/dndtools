@@ -1,11 +1,12 @@
 use dndtools::gen_stats;
 use getopts::Options;
 use std::env;
+use rayon::prelude::*;
 
 fn run(args: Vec<String>) {
     let mut opts = Options::new();
     opts.optopt("n", "", "number of stat blocks to calculate", "[NUM]");
-    opts.optopt("j", "jobs", "number of jobs (threads) to run", "[THREADS]");
+    // opts.optopt("j", "jobs", "number of jobs (threads) to run", "[THREADS]");
     opts.optflag("h", "help", "display help information");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -19,26 +20,19 @@ fn run(args: Vec<String>) {
     }
 
     // define num_rolls from n option, panic if error
-    let num_rolls: u32 = match matches.opt_get_default("n", 1) {
+    let num_rolls: usize = match matches.opt_get_default("n", 1) {
         Ok(m) => m,
         Err(e) => panic!(e.to_string()),
     };
+
 
     // define num_threads from j option, panic if error
-    let num_threads: usize = match matches.opt_get_default("j", num_cpus::get()) {
-        Ok(m) => m,
-        Err(e) => panic!(e.to_string()),
-    };
+    //TODO: add -j option
 
-    let mut i = 0;
-    while i < num_rolls {
+    (0..num_rolls).into_par_iter().for_each(|_x| {
         let stats = gen_stats();
-        for s in stats.iter().rev() {
-            print!("{} ", s);
-        }
-        print!("\n");
-        i += 1;
-    }
+        println!("{} {} {} {} {} {}", stats[5], stats[4], stats[3], stats[2], stats[1], stats[0]);
+    });
 }
 
 fn main() {

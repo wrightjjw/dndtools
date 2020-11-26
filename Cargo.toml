@@ -9,4 +9,4 @@ edition = "2018"
 [dependencies]
 rand = "0.7"
 getopts = "0.2"
-num_cpus = "1.13"
+rayon = "1.5"
