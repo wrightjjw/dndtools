@@ -31,6 +31,10 @@ fn run(args: Vec<String>) {
 
     (0..num_rolls).into_par_iter().for_each(|_x| {
         let stats = gen_stats();
+        // println!("Thread {} here.", match rayon::current_thread_index() {
+        //     Some(x) => x,
+        //     None => 0,
+        // });
         println!("{} {} {} {} {} {}", stats[5], stats[4], stats[3], stats[2], stats[1], stats[0]);
     });
 }
