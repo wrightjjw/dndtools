@@ -8,21 +8,17 @@ pub fn gen_stats() -> [u8; 6] {
     let mut stats: [u8; 6] = [0; 6];
     let mut rng = rand::thread_rng();
 
-    let mut i = 0;
-    while i < 6 {
+    for i in 0..6 {
         let mut rolls: [u8; 4] = [0; 4];
-        let mut j = 0;
-        while j < 4 {
+        for j in 0..4 {
             rolls[j] = rng.gen_range(1, 7);
-            j += 1;
         }
         rolls.sort();
-        j = 0;
-        while j < 3 {
-            stats[i] += rolls[j];
-            j += 1;
+
+        // Skip the first (lowest) roll when adding
+        for r in rolls.iter().skip(1) {
+            stats[i] += r;
         }
-        i += 1;
     }
     stats.sort();
     return stats;
