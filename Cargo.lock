@@ -75,6 +75,7 @@ name = "dndtools"
 version = "0.1.0"
 dependencies = [
  "getopts",
+ "num_cpus",
  "rand",
  "rayon",
 ]

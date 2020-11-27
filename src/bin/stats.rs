@@ -6,7 +6,7 @@ use rayon::prelude::*;
 fn run(args: Vec<String>) {
     let mut opts = Options::new();
     opts.optopt("n", "", "number of stat blocks to calculate", "[NUM]");
-    // opts.optopt("j", "jobs", "number of jobs (threads) to run", "[THREADS]");
+    opts.optopt("j", "jobs", "number of jobs (threads) to run", "[THREADS]");
     opts.optflag("h", "help", "display help information");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -27,7 +27,11 @@ fn run(args: Vec<String>) {
 
 
     // define num_threads from j option, panic if error
-    //TODO: add -j option
+    let num_threads = match matches.opt_get_default("j", num_cpus::get()) {
+        Ok(m) => m,
+        Err(e) => panic!(e.to_string()),
+    };
+    rayon::ThreadPoolBuilder::new().num_threads(num_threads).build_global().unwrap();
 
     (0..num_rolls).into_par_iter().for_each(|_x| {
         let stats = gen_stats();
