@@ -14,3 +14,5 @@ When used with no options,
 where each stat is calculated by rolling 4d6 and dropping the lowest roll.
 
 - `-n NUM` will generate `NUM` blocks. Defaults to 1.
+- `-j JOBS` will set the number of jobs (threads) to use.
+Defaults to the maximum number of CPU threads on the system.
