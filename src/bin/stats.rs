@@ -12,6 +12,7 @@ fn run(args: Vec<String>) {
     opts.optopt("n", "", "number of stat blocks to calculate", "[NUM]");
     opts.optopt("f", "file", "write output to file", "[FILE]");
     opts.optopt("j", "jobs", "number of jobs (threads) to run", "[THREADS]");
+    opts.optflag("q", "quiet", "suppress command line output");
     opts.optflag("h", "help", "display help information");
     let matches = match opts.parse(&args[1..]) {
         Ok(m) => m,
@@ -22,6 +23,14 @@ fn run(args: Vec<String>) {
         let brief = format!("Usage: {} [OPTIONS]", args[0]);
         print!("{}", opts.usage(&brief));
         return;
+    }
+
+    // check if quiet flag is present
+    let quiet;
+    if matches.opt_present("q") {
+        quiet = true;
+    } else {
+        quiet = false;
     }
 
     // define num_rolls from n option, panic if error
@@ -60,7 +69,9 @@ fn run(args: Vec<String>) {
         if file_mode {
             file.lock().unwrap().as_ref().unwrap().write_all(out.as_bytes()).unwrap();
         }
-        print!("{}", out);
+        if !quiet {
+            print!("{}", out);
+        }
     });
 }
 
