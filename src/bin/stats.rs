@@ -1,7 +1,7 @@
 use dndtools::gen_stats;
 use getopts::Options;
-use std::env;
 use rayon::prelude::*;
+use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
@@ -67,7 +67,12 @@ fn run(args: Vec<String>) {
             stats[5], stats[4], stats[3], stats[2], stats[1], stats[0]
         );
         if file_mode {
-            file.lock().unwrap().as_ref().unwrap().write_all(out.as_bytes()).unwrap();
+            file.lock()
+                .unwrap()
+                .as_ref()
+                .unwrap()
+                .write_all(out.as_bytes())
+                .unwrap();
         }
         if !quiet {
             print!("{}", out);
