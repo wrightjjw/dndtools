@@ -1,5 +1,22 @@
 use rand::Rng;
 
+/// Enum for type of die.
+pub enum Die {
+    D4,
+    D6,
+    D8,
+    D10,
+    D12,
+    D20,
+    D100,
+}
+
+/// Struct to represent multiple rolls of a single die type.
+pub struct Rolls {
+    die: Die,
+    rolls: u32,
+}
+
 /// Generate a block of PC stats.
 ///
 /// This is done by calculating each stat by rolling four d6 and dropping the lowest.
