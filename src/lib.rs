@@ -53,10 +53,13 @@ pub fn roll_dice(rolls: Vec<Rolls>) -> (Vec<(Die, Vec<u32>)>, u32) {
     let mut ret: Vec<(Die, Vec<u32>)> = Vec::new();
     let mut rng = rand::thread_rng();
 
+    // die_type represents each type of die given as a parameter
     for die_type in rolls.iter() {
+        // die_rolls is a vector containing each individual roll of the die type (inner vecs of return)
         let mut die_rolls: Vec<u32> = Vec::new();
         for _ in 0..die_type.rolls {
-            let this_roll = rng.gen_range(1, die_type.die as u32 + 1);
+            // this_roll is the value of an individual roll
+            let this_roll: u32 = rng.gen_range(1, die_type.die as u32 + 1);
             die_rolls.push(this_roll);
             total = total + this_roll;
         }
