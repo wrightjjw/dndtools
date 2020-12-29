@@ -1,14 +1,15 @@
 use rand::Rng;
 
 /// Enum for type of die.
+#[derive(Clone, Copy)]
 pub enum Die {
-    D4,
-    D6,
-    D8,
-    D10,
-    D12,
-    D20,
-    D100,
+    D4 = 4,
+    D6 = 6,
+    D8 = 8,
+    D10 = 10,
+    D12 = 12,
+    D20 = 20,
+    D100 = 100,
 }
 
 /// Struct to represent multiple rolls of a single die type.
@@ -39,6 +40,30 @@ pub fn gen_stats() -> [u8; 6] {
     }
     stats.sort();
     return stats;
+}
+
+/// Simulate rolling dice.
+///
+/// Takes a vec of Rolls as a parameter.
+/// Each individual roll is calculated and returned.
+/// Returns a tuple containing a Vec of inner tuples and an overall sum.
+/// The inner tuples contain the die type and individual roll values of the die type.
+pub fn roll_dice(rolls: Vec<Rolls>) -> (Vec<(Die, Vec<u32>)>, u32) {
+    let mut total: u32 = 0;
+    let mut ret: Vec<(Die, Vec<u32>)> = Vec::new();
+    let mut rng = rand::thread_rng();
+
+    for die_type in rolls.iter() {
+        let mut die_rolls: Vec<u32> = Vec::new();
+        for _ in 0..die_type.rolls {
+            let this_roll = rng.gen_range(1, die_type.die as u32 + 1);
+            die_rolls.push(this_roll);
+            total = total + this_roll;
+        }
+        ret.push((die_type.die, die_rolls));
+    }
+
+    return (ret, total);
 }
 
 #[cfg(test)]
