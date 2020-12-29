@@ -1,7 +1,7 @@
 use rand::Rng;
 
 /// Enum for type of die.
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, PartialEq)]
 pub enum Die {
     D4 = 4,
     D6 = 6,
@@ -90,5 +90,32 @@ mod tests {
                 i += 1;
             }
         }
+    }
+
+    #[test]
+    fn test_roll_none() {
+        let r = roll_dice(Vec::new());
+        assert!(r.0.len() == 0);
+        assert!(r.1 == 0);
+    }
+
+    #[test]
+    fn test_roll_d20() {
+        let d20 = Rolls {
+            die: Die::D20,
+            rolls: 1,
+        };
+
+        let mut v: Vec<Rolls> = Vec::new();
+        v.push(d20);
+
+        let r = roll_dice(v);
+
+        assert!(r.0.len() == 1);        // one type of die
+        assert!(r.0[0].0 == Die::D20);  // die is d20
+        assert!(r.0[0].1.len() == 1);   // one die roll
+        assert!(r.0[0].1[0] >= 1);      // assert 1 to 20
+        assert!(r.0[0].1[0] <= 20);     // ""
+        assert!(r.0[0].1[0] == r.1);    // one roll = total
     }
 }
