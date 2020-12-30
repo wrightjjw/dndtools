@@ -12,11 +12,27 @@ pub enum Die {
     D100 = 100,
 }
 
-/// Struct to represent multiple rolls of a single die type.
-pub struct Rolls {
+/// Struct to represent multiple dice of a single type to be rolled, such as 2d6.
+pub struct DiceToRoll {
     die: Die,
-    rolls: u32,
+    number: u32,
 }
+
+/// Struct to represent multiple rolled dice of a single type.
+/// Stores individual rolls and a grand total.
+pub struct RolledDice {
+    die: Die,
+    rolls: Vec<u32>,
+    total: u32,
+}
+
+/// Struct to represent multiple rolled dice of multiple types.
+/// Stores a vec of `RolledDice` and a grand total.
+pub struct RolledDiceBatch {
+    types: Vec<RolledDice>,
+    total: u32,
+}
+
 
 /// Generate a block of PC stats.
 ///
@@ -45,28 +61,34 @@ pub fn gen_stats() -> [u8; 6] {
 /// Simulate rolling dice.
 ///
 /// Takes a vec of Rolls as a parameter.
-/// Each individual roll is calculated and returned.
-/// Returns a tuple containing a Vec of inner tuples and an overall sum.
-/// The inner tuples contain the die type and individual roll values of the die type.
-pub fn roll_dice(rolls: Vec<Rolls>) -> (Vec<(Die, Vec<u32>)>, u32) {
-    let mut total: u32 = 0;
-    let mut ret: Vec<(Die, Vec<u32>)> = Vec::new();
+/// Each individual roll is calculated and returned in a RolledDiceBatch.
+pub fn roll_dice(rolls: Vec<DiceToRoll>) -> RolledDiceBatch {
+    let mut ret = RolledDiceBatch {
+        types: Vec::new(),
+        total: 0,
+    };
     let mut rng = rand::thread_rng();
 
     // die_type represents each type of die given as a parameter
     for die_type in rolls.iter() {
         // die_rolls is a vector containing each individual roll of the die type (inner vecs of return)
-        let mut die_rolls: Vec<u32> = Vec::new();
-        for _ in 0..die_type.rolls {
+        let mut die_rolls = RolledDice {
+            die: die_type.die,
+            rolls: Vec::new(),
+            total: 0,
+        };
+        for _ in 0..die_type.number {
             // this_roll is the value of an individual roll
             let this_roll: u32 = rng.gen_range(1, die_type.die as u32 + 1);
-            die_rolls.push(this_roll);
-            total = total + this_roll;
+            die_rolls.rolls.push(this_roll);
+            die_rolls.total += this_roll;
+            ret.total += this_roll;
+
         }
-        ret.push((die_type.die, die_rolls));
+        ret.types.push(die_rolls);
     }
 
-    return (ret, total);
+    return ret;
 }
 
 #[cfg(test)]
@@ -95,27 +117,27 @@ mod tests {
     #[test]
     fn test_roll_none() {
         let r = roll_dice(Vec::new());
-        assert!(r.0.len() == 0);
-        assert!(r.1 == 0);
+        assert!(r.types.len() == 0);
+        assert!(r.total == 0);
     }
 
     #[test]
     fn test_roll_d20() {
-        let d20 = Rolls {
+        let d20 = DiceToRoll {
             die: Die::D20,
-            rolls: 1,
+            number: 1,
         };
 
-        let mut v: Vec<Rolls> = Vec::new();
+        let mut v: Vec<DiceToRoll> = Vec::new();
         v.push(d20);
 
         let r = roll_dice(v);
 
-        assert!(r.0.len() == 1);        // one type of die
-        assert!(r.0[0].0 == Die::D20);  // die is d20
-        assert!(r.0[0].1.len() == 1);   // one die roll
-        assert!(r.0[0].1[0] >= 1);      // assert 1 to 20
-        assert!(r.0[0].1[0] <= 20);     // ""
-        assert!(r.0[0].1[0] == r.1);    // one roll = total
+        assert!(r.types.len() == 1);                // one type of die
+        assert!(r.types[0].die == Die::D20);        // die is d20
+        assert!(r.types[0].rolls.len() == 1);       // one die roll
+        assert!(r.types[0].rolls[0] >= 1);          // assert 1 to 20
+        assert!(r.types[0].rolls[0] <= 20);         // ""
+        assert!(r.types[0].rolls[0] == r.total);    // one roll = total
     }
 }
