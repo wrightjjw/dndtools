@@ -33,7 +33,6 @@ pub struct RolledDiceBatch {
     total: u32,
 }
 
-
 /// Generate a block of PC stats.
 ///
 /// This is done by calculating each stat by rolling four d6 and dropping the lowest.
@@ -83,7 +82,6 @@ pub fn roll_dice(rolls: Vec<DiceToRoll>) -> RolledDiceBatch {
             die_rolls.rolls.push(this_roll);
             die_rolls.total += this_roll;
             ret.total += this_roll;
-
         }
         ret.types.push(die_rolls);
     }
@@ -133,11 +131,11 @@ mod tests {
 
         let r = roll_dice(v);
 
-        assert!(r.types.len() == 1);                // one type of die
-        assert!(r.types[0].die == Die::D20);        // die is d20
-        assert!(r.types[0].rolls.len() == 1);       // one die roll
-        assert!(r.types[0].rolls[0] >= 1);          // assert 1 to 20
-        assert!(r.types[0].rolls[0] <= 20);         // ""
-        assert!(r.types[0].rolls[0] == r.total);    // one roll = total
+        assert!(r.types.len() == 1); // one type of die
+        assert!(r.types[0].die == Die::D20); // die is d20
+        assert!(r.types[0].rolls.len() == 1); // one die roll
+        assert!(r.types[0].rolls[0] >= 1); // assert 1 to 20
+        assert!(r.types[0].rolls[0] <= 20); // ""
+        assert!(r.types[0].rolls[0] == r.total); // one roll = total
     }
 }
