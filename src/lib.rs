@@ -144,4 +144,26 @@ mod tests {
         assert!(r.types[0].rolls[0] <= 20); // ""
         assert!(r.types[0].rolls[0] == r.total); // one roll = total
     }
+
+    #[test]
+    fn test_roll_4d6() {
+        let dice = DiceToRoll::new(4, Die::D6);
+
+        let mut v: Vec<DiceToRoll> = Vec::new();
+        v.push(dice);
+
+        let r = roll_dice(v);
+
+        assert!(r.types.len() == 1); // one type of die
+        assert!(r.types[0].die == Die::D6); // die is D6
+        assert!(r.types[0].rolls.len() == 4); // four rolls
+        // assert each roll is between 1 and 6
+        for i in 0..4 {
+            assert!(r.types[0].rolls[i] >= 1);
+            assert!(r.types[0].rolls[i] <= 6);
+        }
+        // assert the total is between 4 and 24
+        assert!(r.types[0].total >= 4);
+        assert!(r.types[0].total <= 24);
+    }
 }
