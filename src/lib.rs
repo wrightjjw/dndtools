@@ -157,6 +157,7 @@ mod tests {
         assert!(r.types.len() == 1); // one type of die
         assert!(r.types[0].die == Die::D6); // die is D6
         assert!(r.types[0].rolls.len() == 4); // four rolls
+
         // assert each roll is between 1 and 6
         for i in 0..4 {
             assert!(r.types[0].rolls[i] >= 1);
@@ -181,6 +182,7 @@ mod tests {
         assert!(r.types.len() == 2); // two types of dice
         assert!(r.types[0].die == Die::D6); // first die is d6
         assert!(r.types[0].rolls.len() == 6); // six d6 rolls
+
         // assert each d6 roll is between 1 and 6
         for i in 0..6 {
             assert!(r.types[0].rolls[i] >= 1);
@@ -188,11 +190,13 @@ mod tests {
         }
         assert!(r.types[1].die == Die::D8); // second die is d8
         assert!(r.types[1].rolls.len() == 4); // four d8 rolls
+
         // assert each d8 roll is between 1 and 8
         for i in 0..4 {
             assert!(r.types[1].rolls[i] >= 1);
             assert!(r.types[1].rolls[i] <= 8);
         }
+
         // assert the total equals the subtotals
         assert!(r.total == r.types[0].total + r.types[1].total);
         // assert the total is between 10 and 68
