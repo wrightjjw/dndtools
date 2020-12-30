@@ -18,6 +18,15 @@ pub struct DiceToRoll {
     number: u32,
 }
 
+impl DiceToRoll {
+    pub const fn new(number: u32, die: Die) -> DiceToRoll {
+        return DiceToRoll {
+            die: die,
+            number: number,
+        };
+    }
+}
+
 /// Struct to represent multiple rolled dice of a single type.
 /// Stores individual rolls and a grand total.
 pub struct RolledDice {
@@ -121,10 +130,7 @@ mod tests {
 
     #[test]
     fn test_roll_d20() {
-        let d20 = DiceToRoll {
-            die: Die::D20,
-            number: 1,
-        };
+        let d20 = DiceToRoll::new(1, Die::D20);
 
         let mut v: Vec<DiceToRoll> = Vec::new();
         v.push(d20);
