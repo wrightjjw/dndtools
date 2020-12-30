@@ -24,5 +24,6 @@ jobs:
   format:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: check format
         run: cargo fmt -- --check
