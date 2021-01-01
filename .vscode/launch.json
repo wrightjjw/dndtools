@@ -7,6 +7,14 @@
         {
             "type": "lldb",
             "request": "launch",
+            "name": "roll 6d6 4d8",
+            "program": "${workspaceFolder}/target/debug/roll",
+            "args": ["6d6", "4d8"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
             "name": "stats",
             "program": "${workspaceRoot}/target/debug/stats",
             "args": [],
