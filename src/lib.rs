@@ -14,8 +14,8 @@ pub enum Die {
 
 /// Struct to represent multiple dice of a single type to be rolled, such as 2d6.
 pub struct DiceToRoll {
-    die: Die,
-    number: u32,
+    pub die: Die,
+    pub number: u32,
 }
 
 impl DiceToRoll {
@@ -75,16 +75,16 @@ impl DiceToRoll {
 /// Struct to represent multiple rolled dice of a single type.
 /// Stores individual rolls and a grand total.
 pub struct RolledDice {
-    die: Die,
-    rolls: Vec<u32>,
-    total: u32,
+    pub die: Die,
+    pub rolls: Vec<u32>,
+    pub total: u32,
 }
 
 /// Struct to represent multiple rolled dice of multiple types.
 /// Stores a vec of `RolledDice` and a grand total.
 pub struct RolledDiceBatch {
-    types: Vec<RolledDice>,
-    total: u32,
+    pub types: Vec<RolledDice>,
+    pub total: u32,
 }
 
 /// Generate a block of PC stats.
