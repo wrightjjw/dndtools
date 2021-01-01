@@ -25,6 +25,51 @@ impl DiceToRoll {
             number: number,
         };
     }
+
+    //TODO: This should really be a const fn,
+    // but Rust does not currently support control flow in const fn
+    /// Generate a `DiceToRoll` from a string such as '2d6'.
+    pub fn from_string(s: String) -> Result<DiceToRoll, String> {
+        let mut d = false; // if the d has been declared in the string yet
+        let mut num_str: String = "".to_string(); // number of rolls
+        let mut die_str: String = "".to_string(); // type of die
+        for ch in s.to_lowercase().chars() {
+            if ch == 'd' {
+                d = true;
+                if num_str == "" {
+                    num_str = "1".to_string();
+                }
+            }
+            if d {
+                die_str.push(ch);
+            } else {
+                num_str.push(ch);
+            }
+        }
+
+        let number = match num_str.parse::<u32>() {
+            Ok(x) => x,
+            Err(_) => return Err("Number is not a valid integer".to_string()),
+        };
+
+        let die_int = match die_str.parse::<u32>() {
+            Ok(x) => x,
+            Err(_) => return Err("Die is not a valid integer".to_string()),
+        };
+
+        let die: Die = match die_int {
+            4 => Die::D4,
+            6 => Die::D6,
+            8 => Die::D8,
+            10 => Die::D10,
+            12 => Die::D12,
+            20 => Die::D20,
+            100 => Die::D100,
+            _ => return Err("Die is not a valid die type".to_string()),
+        };
+
+        return Ok(DiceToRoll::new(number, die));
+    }
 }
 
 /// Struct to represent multiple rolled dice of a single type.
