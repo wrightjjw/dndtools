@@ -1,7 +1,7 @@
 use rand::Rng;
 
 /// Enum for type of die.
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Die {
     D4 = 4,
     D6 = 6,
@@ -13,6 +13,7 @@ pub enum Die {
 }
 
 /// Struct to represent multiple dice of a single type to be rolled, such as 2d6.
+#[derive(PartialEq, Debug)]
 pub struct DiceToRoll {
     pub die: Die,
     pub number: u32,
@@ -40,7 +41,7 @@ impl DiceToRoll {
                     num_str = "1".to_string();
                 }
             }
-            if d {
+            else if d {
                 die_str.push(ch);
             } else {
                 num_str.push(ch);
@@ -146,6 +147,28 @@ pub fn roll_dice(rolls: Vec<DiceToRoll>) -> RolledDiceBatch {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_dicetoroll_fromstring_4d8() {
+        let s = "4d8".to_string();
+        let result = DiceToRoll::from_string(s).expect("DiceToRoll::from_string(\"d4d8\" panicked");
+        let expect = DiceToRoll::new(4, Die::D8);
+        assert_eq!(expect, result);
+    }
+
+    #[test]
+    fn test_dicetoroll_fromstring_d20() {
+        let s = "d20".to_string();
+        let result = DiceToRoll::from_string(s).expect("DiceToRoll::from_string(\"d20\") panicked");
+        let expect = DiceToRoll::new(1, Die::D20);
+        assert_eq!(expect, result);
+    }
+
+    #[test]
+    fn test_dicetoroll_fromstring_2d7() {
+        let s = "2d7".to_string();
+        DiceToRoll::from_string(s).expect_err("DiceToRoll::from_string(\"2d7\") passed");
+    }
 
     #[test]
     fn test_stats() {
