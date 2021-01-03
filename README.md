@@ -16,3 +16,10 @@ where each stat is calculated by rolling 4d6 and dropping the lowest roll.
 - `-n NUM` will generate `NUM` blocks. Defaults to 1.
 - `-j JOBS` will set the number of jobs (threads) to use.
 Defaults to the maximum number of CPU threads on the system.
+
+## roll
+`roll` takes any number of arguments in valid die formats,
+such as "2d6" or "d20".
+It prints the output of each individual roll and total of each group given,
+as well as a grand total.
+It must be provided with at least one argument.

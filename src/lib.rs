@@ -1,7 +1,7 @@
 use rand::Rng;
 
 /// Enum for type of die.
-#[derive(Clone, Copy, PartialEq)]
+#[derive(Clone, Copy, PartialEq, Debug)]
 pub enum Die {
     D4 = 4,
     D6 = 6,
@@ -13,9 +13,10 @@ pub enum Die {
 }
 
 /// Struct to represent multiple dice of a single type to be rolled, such as 2d6.
+#[derive(PartialEq, Debug)]
 pub struct DiceToRoll {
-    die: Die,
-    number: u32,
+    pub die: Die,
+    pub number: u32,
 }
 
 impl DiceToRoll {
@@ -25,21 +26,65 @@ impl DiceToRoll {
             number: number,
         };
     }
+
+    //TODO: This should really be a const fn,
+    // but Rust does not currently support control flow in const fn
+    /// Generate a `DiceToRoll` from a string such as '2d6'.
+    pub fn from_string(s: String) -> Result<DiceToRoll, String> {
+        let mut d = false; // if the d has been declared in the string yet
+        let mut num_str: String = "".to_string(); // number of rolls
+        let mut die_str: String = "".to_string(); // type of die
+        for ch in s.to_lowercase().chars() {
+            if ch == 'd' {
+                d = true;
+                if num_str == "" {
+                    num_str = "1".to_string();
+                }
+            } else if d {
+                die_str.push(ch);
+            } else {
+                num_str.push(ch);
+            }
+        }
+
+        let number = match num_str.parse::<u32>() {
+            Ok(x) => x,
+            Err(_) => return Err("Number is not a valid integer".to_string()),
+        };
+
+        let die_int = match die_str.parse::<u32>() {
+            Ok(x) => x,
+            Err(_) => return Err("Die is not a valid integer".to_string()),
+        };
+
+        let die: Die = match die_int {
+            4 => Die::D4,
+            6 => Die::D6,
+            8 => Die::D8,
+            10 => Die::D10,
+            12 => Die::D12,
+            20 => Die::D20,
+            100 => Die::D100,
+            _ => return Err("Die is not a valid die type".to_string()),
+        };
+
+        return Ok(DiceToRoll::new(number, die));
+    }
 }
 
 /// Struct to represent multiple rolled dice of a single type.
 /// Stores individual rolls and a grand total.
 pub struct RolledDice {
-    die: Die,
-    rolls: Vec<u32>,
-    total: u32,
+    pub die: Die,
+    pub rolls: Vec<u32>,
+    pub total: u32,
 }
 
 /// Struct to represent multiple rolled dice of multiple types.
 /// Stores a vec of `RolledDice` and a grand total.
 pub struct RolledDiceBatch {
-    types: Vec<RolledDice>,
-    total: u32,
+    pub types: Vec<RolledDice>,
+    pub total: u32,
 }
 
 /// Generate a block of PC stats.
@@ -101,6 +146,28 @@ pub fn roll_dice(rolls: Vec<DiceToRoll>) -> RolledDiceBatch {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn test_dicetoroll_fromstring_4d8() {
+        let s = "4d8".to_string();
+        let result = DiceToRoll::from_string(s).expect("DiceToRoll::from_string(\"d4d8\" panicked");
+        let expect = DiceToRoll::new(4, Die::D8);
+        assert_eq!(expect, result);
+    }
+
+    #[test]
+    fn test_dicetoroll_fromstring_d20() {
+        let s = "d20".to_string();
+        let result = DiceToRoll::from_string(s).expect("DiceToRoll::from_string(\"d20\") panicked");
+        let expect = DiceToRoll::new(1, Die::D20);
+        assert_eq!(expect, result);
+    }
+
+    #[test]
+    fn test_dicetoroll_fromstring_2d7() {
+        let s = "2d7".to_string();
+        DiceToRoll::from_string(s).expect_err("DiceToRoll::from_string(\"2d7\") passed");
+    }
 
     #[test]
     fn test_stats() {
