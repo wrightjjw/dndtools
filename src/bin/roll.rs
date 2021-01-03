@@ -17,7 +17,7 @@ fn run(args: Vec<String>) {
 
     // convert args to a Vec<DiceToRoll>
     let mut dice: Vec<DiceToRoll> = Vec::new();
-    for roll in matches.free.iter() {
+    for roll in matches.free.iter().skip(1) {
         let this_dice = match DiceToRoll::from_string(roll.to_string()) {
             Ok(x) => x,
             Err(e) => panic!(e),
@@ -30,7 +30,7 @@ fn run(args: Vec<String>) {
 
     // output
     for die in dice.types.iter() {
-        println!("{}: {} ({:?})", die.die as u32, die.total, die.rolls);
+        println!("{}d{}: {} {:?}", die.rolls.len(), die.die as u32, die.total, die.rolls);
     }
     println!("Total: {}", dice.total);
 }
