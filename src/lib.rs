@@ -40,8 +40,7 @@ impl DiceToRoll {
                 if num_str == "" {
                     num_str = "1".to_string();
                 }
-            }
-            else if d {
+            } else if d {
                 die_str.push(ch);
             } else {
                 num_str.push(ch);

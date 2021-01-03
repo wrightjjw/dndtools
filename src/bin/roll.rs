@@ -30,7 +30,13 @@ fn run(args: Vec<String>) {
 
     // output
     for die in dice.types.iter() {
-        println!("{}d{}: {} {:?}", die.rolls.len(), die.die as u32, die.total, die.rolls);
+        println!(
+            "{}d{}: {} {:?}",
+            die.rolls.len(),
+            die.die as u32,
+            die.total,
+            die.rolls
+        );
     }
     println!("Total: {}", dice.total);
 }
