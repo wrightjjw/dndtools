@@ -3,7 +3,8 @@ A library of tools to use for Dungeons and Dragons, specifically 5th Edition.
 The tools are available as a library of Rust functions
 as well as a collection of cli binaries.
 
-So far there is a stat generator. That's about it so far.
+So far there is a stat generator and a dice roller.
+There are plans to add an HP generator.
 
 # CLI Usage
 All programs take a `-h` or `--help` flag to display help information.
