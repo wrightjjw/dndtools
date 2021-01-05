@@ -38,7 +38,9 @@ fn run(args: Vec<String>) {
             die.rolls
         );
     }
-    println!("Total: {}", dice.total);
+    if matches.free.len() > 2 {
+        println!("Total: {}", dice.total);
+    }
 }
 
 fn main() {
