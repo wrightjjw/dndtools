@@ -17,8 +17,8 @@ where each stat is calculated by rolling 4d6 and dropping the lowest roll.
 - `-n NUM` will generate `NUM` blocks. Defaults to 1.
 - `-f FILE` will write output to `FILE`.
 - `-j JOBS` will set the number of jobs (threads) to use.
-- `-q` will supress command line output.
 Defaults to the maximum number of CPU threads on the system.
+- `-q` will supress command line output.
 
 ## roll
 `roll` takes any number of arguments in valid die formats,
