@@ -16,6 +16,11 @@ fn run(args: Vec<String>) -> Result<(), String> {
         return Ok(());
     }
 
+    // check for no arguments
+    if matches.free.len() == 1 {
+        return Err("missing dice".to_string());
+    }
+
     // convert args to a Vec<DiceToRoll>
     let mut dice: Vec<DiceToRoll> = Vec::new();
     for roll in matches.free.iter().skip(1) {
