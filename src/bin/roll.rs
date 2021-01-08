@@ -1,8 +1,9 @@
 use dndtools::{roll_dice, DiceToRoll};
 use getopts::Options;
 use std::env;
+use std::process::exit;
 
-fn run(args: Vec<String>) {
+fn run(args: Vec<String>) -> Result<(), String> {
     // define options
     let mut opts = Options::new();
     opts.optflag("h", "help", "display help information");
@@ -12,16 +13,13 @@ fn run(args: Vec<String>) {
     if matches.opt_present("h") {
         let brief = format!("Usage: {} [OPTIONS] ROLLS", args[0]);
         print!("{}", opts.usage(&brief));
-        return;
+        return Ok(());
     }
 
     // convert args to a Vec<DiceToRoll>
     let mut dice: Vec<DiceToRoll> = Vec::new();
     for roll in matches.free.iter().skip(1) {
-        let this_dice = match DiceToRoll::from_string(roll.to_string()) {
-            Ok(x) => x,
-            Err(e) => panic!(e),
-        };
+        let this_dice = DiceToRoll::from_string(roll.to_string())?;
         dice.push(this_dice);
     }
 
@@ -41,9 +39,18 @@ fn run(args: Vec<String>) {
     if matches.free.len() > 2 {
         println!("Total: {}", dice.total);
     }
+
+    Ok(())
 }
 
 fn main() {
     let args = env::args().collect();
-    run(args);
+    match run(args) {
+        Ok(_) => exit(0),
+        Err(e) => {
+            println!("roll: {}", e);
+            println!("Try 'roll --help' for more info.");
+            exit(1);
+        }
+    };
 }
