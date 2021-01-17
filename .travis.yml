@@ -1,0 +1,15 @@
+language: rust
+script:
+  - cargo test --verbose
+  - cargo fmt -- --check
+rust:
+  - stable
+  - beta
+  - nightly
+os:
+  - linux
+  - osx
+  - windows
+jobs:
+  allow_failures:
+    - rust: nightly
