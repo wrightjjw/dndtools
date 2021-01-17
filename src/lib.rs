@@ -1,3 +1,5 @@
+// Copyright (C) 2021 Josh Wright
+
 //! Library and binaries to provide tools and functions for managing Dungeons and Dragons 5th Edition.
 //!
 //! This documentation covers the features provided by the library,

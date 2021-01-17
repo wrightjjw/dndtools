@@ -1,3 +1,5 @@
+// Copyright (C) 2021 Josh Wright
+
 use dndtools::gen_stats;
 use getopts::Options;
 use rayon::prelude::*;

@@ -1,3 +1,5 @@
+// Copyright (C) 2021 Josh Wright
+
 use dndtools::{roll_dice, DiceToRoll};
 use getopts::Options;
 use std::env;
