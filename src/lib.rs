@@ -1,3 +1,8 @@
+//! Library and binaries to provide tools and functions for managing Dungeons and Dragons 5th Edition.
+//!
+//! This documentation covers the features provided by the library,
+//! including functions, structs, and enums that can be useful to a D&D program.
+
 use rand::Rng;
 
 /// Enum for type of die.
