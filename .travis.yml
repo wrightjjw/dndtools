@@ -1,7 +1,6 @@
 language: rust
 script:
   - cargo test --verbose
-  - cargo fmt -- --check
 rust:
   - stable
   - beta
