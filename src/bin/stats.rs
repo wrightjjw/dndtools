@@ -8,7 +8,7 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 use std::process::exit;
-use std::sync::{Arc, Mutex};
+use std::sync::Mutex;
 
 fn run(args: Vec<String>) -> Result<(), String> {
     let mut opts = Options::new();
@@ -47,10 +47,9 @@ fn run(args: Vec<String>) -> Result<(), String> {
     };
 
     // open a file with mutex, if necessary
-    let file_mode = matches.opt_present("f");
-    let file = match matches.opt_str("f") {
-        Some(m) => Arc::new(Mutex::new(File::create(Path::new(&m)))),
-        None => Arc::new(Mutex::new(File::create(Path::new("")))),
+    let file_op = match matches.opt_str("f") {
+        Some(m) => Some(Mutex::new(File::create(Path::new(&m)))),
+        None => None,
     };
 
     // define num_threads from j option, panic if error
@@ -73,7 +72,7 @@ fn run(args: Vec<String>) -> Result<(), String> {
                 "{} {} {} {} {} {}\n",
                 stats[5], stats[4], stats[3], stats[2], stats[1], stats[0]
             );
-            if file_mode {
+            if let Some(file) = &file_op {
                 file.lock()
                     .map_err(|e| e.to_string())?
                     .as_ref()
