@@ -7,7 +7,6 @@ description = "Various CLI tools and library for D&D 5e"
 documentation = "https://docs.rs/dndtools"
 repository = "https://github.com/wrightjjw/dndtools"
 license = "GPL-3.0"
-license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
