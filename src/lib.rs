@@ -34,6 +34,7 @@ impl DiceToRoll {
     ///
     /// Example:
     /// ```
+    /// use dndtools::{DiceToRoll, Die};
     /// DiceToRoll::new(2, Die::D6);
     /// ```
     /// The above returns a `DieToRoll` with the value 2d6.
@@ -50,7 +51,8 @@ impl DiceToRoll {
     ///
     /// Example:
     /// ```
-    /// DiceToRoll::from_string('2d6');
+    /// use dndtools::DiceToRoll;
+    /// DiceToRoll::from_string("2d6".to_string());
     /// ```
     /// The above returns a `DiceToRoll` with the value 2d6.
     pub fn from_string(s: String) -> Result<DiceToRoll, String> {
