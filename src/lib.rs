@@ -22,11 +22,22 @@ pub enum Die {
 /// Struct to represent multiple dice of a single type to be rolled, such as 2d6.
 #[derive(PartialEq, Debug)]
 pub struct DiceToRoll {
+    /// The type of `Die`, as in 2***d6***.
     pub die: Die,
+    /// The number of rolls, as in ***2***d6.
     pub number: u32,
 }
 
 impl DiceToRoll {
+    /// Create a new `DiceToRoll`.
+    /// The arguments map to the struct fields.
+    ///
+    /// Example:
+    /// ```
+    /// use dndtools::{DiceToRoll, Die};
+    /// DiceToRoll::new(2, Die::D6);
+    /// ```
+    /// The above returns a `DieToRoll` with the value 2d6.
     pub const fn new(number: u32, die: Die) -> DiceToRoll {
         return DiceToRoll {
             die: die,
@@ -37,6 +48,13 @@ impl DiceToRoll {
     //TODO: This should really be a const fn,
     // but Rust does not currently support control flow in const fn
     /// Generate a `DiceToRoll` from a string such as '2d6'.
+    ///
+    /// Example:
+    /// ```
+    /// use dndtools::DiceToRoll;
+    /// DiceToRoll::from_string("2d6".to_string());
+    /// ```
+    /// The above returns a `DiceToRoll` with the value 2d6.
     pub fn from_string(s: String) -> Result<DiceToRoll, String> {
         let mut d = false; // if the d has been declared in the string yet
         let mut num_str: String = "".to_string(); // number of rolls
@@ -82,22 +100,27 @@ impl DiceToRoll {
 /// Struct to represent multiple rolled dice of a single type.
 /// Stores individual rolls and a grand total.
 pub struct RolledDice {
+    /// The type of `Die`.
     pub die: Die,
+    /// A vector containing the individual values of each roll.
     pub rolls: Vec<u32>,
+    /// The grand total of all the rolls.
     pub total: u32,
 }
 
 /// Struct to represent multiple rolled dice of multiple types.
 /// Stores a vec of `RolledDice` and a grand total.
 pub struct RolledDiceBatch {
+    /// A vector of `RolledDice` usually containing one value per die type.
     pub types: Vec<RolledDice>,
+    /// The grand total of all the `RolledDice` in the `types` vector.
     pub total: u32,
 }
 
 /// Generate a block of PC stats.
 ///
 /// This is done by calculating each stat by rolling four d6 and dropping the lowest.
-/// Returns an array of `u8`.
+/// Returns an array of `u8` containing the generated values.
 pub fn gen_stats() -> [u8; 6] {
     let mut stats: [u8; 6] = [0; 6];
     let mut rng = rand::thread_rng();
@@ -121,7 +144,7 @@ pub fn gen_stats() -> [u8; 6] {
 /// Simulate rolling dice.
 ///
 /// Takes a vec of Rolls as a parameter.
-/// Each individual roll is calculated and returned in a RolledDiceBatch.
+/// Each individual roll is calculated and returned in a `RolledDiceBatch`.
 pub fn roll_dice(rolls: Vec<DiceToRoll>) -> RolledDiceBatch {
     let mut ret = RolledDiceBatch {
         types: Vec::new(),
